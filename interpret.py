@@ -56,13 +56,13 @@ def execute(cmd, params):
 
   elif cmd=='!':
     checkLen(1)
-    if plen == 1: print(stack.pop(-params[0]))
-    else: print(stack.pop())
+    if plen == 1: print(stack.pop(-params[0]), end="")
+    else: print(stack.pop(), end="")
   
   elif cmd==':':
     checkLen(1)
-    if plen == 1: print(chr(stack.pop(-params[0])))
-    else: print(chr(stack.pop()))
+    if plen == 1: print(chr(stack.pop(-params[0])), end="")
+    else: print(chr(stack.pop()), end="")
   
   elif cmd=='.':
     checkLen(1)
@@ -115,8 +115,6 @@ def execute(cmd, params):
         run(bunch)
     else:
       run(bunch)
-  
-  # print('stack:', stack)
 
 def run(code):
   mol = lu = 0
@@ -125,7 +123,7 @@ def run(code):
       mol = code.find('몰', lu)
       cmd = code[mol+1]
 
-      if cmd in '?!.,;+-*/~':
+      if cmd in '?:!.,;+-*/~':
         lu = code.find('루', mol)
         if lu == -1: raise NoLuError(cmd)
         execute(cmd, parameters(code[mol+2:lu]))
@@ -139,8 +137,6 @@ def run(code):
         lu = code.find('}루', findfrom)
         if lu == 0: raise NoLuError()
         stack.append(code[mol+2:lu])
-
-        # print('stack:', stack)
       else:
         raise UnknownCommandError(cmd)
   except MOLUERROR as e:
@@ -152,7 +148,3 @@ def run(code):
     raise MOLUERROR
 
 run(sourceCode)
-
-print('<RESULT>')
-print('stack:', stack)
-print('storage:', storage)
